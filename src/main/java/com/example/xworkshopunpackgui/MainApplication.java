@@ -25,6 +25,20 @@ public class MainApplication extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        if (args.length >= 2) {
+            // Headless mode: args[0] = input file, args[1] = output dir
+            try {
+                Unpacker unpacker = new Unpacker(new java.io.File(args[0]));
+                unpacker.readHeader();
+                unpacker.unpack(java.nio.file.Paths.get(args[1]));
+                System.out.println("Unpacking completed successfully.");
+            } catch (Exception e) {
+                System.err.println("Error: " + e.getMessage());
+                System.exit(1);
+            }
+            System.exit(0);
+        } else {
+            launch();
+        }
     }
 }
